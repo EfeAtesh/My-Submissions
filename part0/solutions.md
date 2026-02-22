@@ -2,9 +2,8 @@
 sequenceDiagram
     participant browser
     participant server
-
     Note over browser: User writes a note and clicks the "Save" button
-
+    
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
     Note left of server: The server saves the new note to the database

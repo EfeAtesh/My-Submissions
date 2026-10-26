@@ -1,3 +1,5 @@
+import React from 'react'
+
 const App = () => {
   const course = {
     name: 'Half Stack application development',

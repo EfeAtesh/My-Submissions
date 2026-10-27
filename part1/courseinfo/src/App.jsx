@@ -12,7 +12,7 @@ const App = () => {
   }
 
   return (
-    <Course course={course} />
+    <><Course course={course} /><div>total of {course.parts.reduce((sum, part) => sum + part.exercises, 0)} exercises </div></>
   )
 }
 

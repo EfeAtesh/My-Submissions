@@ -8,11 +8,12 @@
   margin-bottom: 10px;
 }
 .someChangeHappened {
-  color: rgba(0, 255, 0, 0.34);
+  color: rgba(0, 0, 0, 0.34);
   background: rgb(0, 255, 123);
   font-size: 20px;
   border-style: complete;
   border-radius: 40px;
   padding: 10px;
   margin-bottom: 10px;
+  foreground-color: black;
 }

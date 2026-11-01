@@ -1,36 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/person'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' , number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace' , number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov' , number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck' , number: '39-23-6423122', id: 4 }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [newId, setNewId] = useState(persons.length + 1)
   const [filterTerm, setFilterTerm] = useState('')
+
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(response => setPersons(response.data))
+      .catch(() => alert('Could not load the phonebook'))
+  }, [])
+
   const personsToShow = persons.filter(person =>
     person.name.toLowerCase().includes(filterTerm.toLowerCase())
   )
-  const handleListAdd = (event) => {
+
+  const handleListAdd = event => {
     event.preventDefault()
 
     if (persons.some((person) => person.name === newName && person.number === newNumber)) {
       alert(`${newName} and their phone number is already added to the phonebook`)
+      return
     }
 
-
-    setPersons(persons.concat({ name: newName, number: newNumber, id: newId }))
-    setNewName('')
-    setNewNumber('')
-    setNewId(newId + 1)
-    setMessage(null)
-    setFilterTerm('')
+    personService
+      .create({ name: newName, number: newNumber })
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+        setFilterTerm('')
+      })
+      .catch(() => alert('Could not save the person'))
 
   }
 

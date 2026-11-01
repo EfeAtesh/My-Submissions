@@ -1,6 +1,6 @@
 const PersonForm = ({ addPerson, newName, setNewName, newNumber, setNewNumber }) => {
 
-    
+
 
     return (
         <form onSubmit={addPerson}>
@@ -12,6 +12,9 @@ const PersonForm = ({ addPerson, newName, setNewName, newNumber, setNewNumber })
             </div>
             <div>
                 <button type="submit">add</button>
+            </div>
+            <div>
+                <button type="delete" onClick = {personService.delete}>delete</button>
             </div>
         </form>
     )

@@ -1,4 +1,4 @@
-import countryService from '../services/country';
+import Weather from './Weather';
 
 const ShowCountry = ({ country }) => {
   if (!country) {
@@ -8,7 +8,7 @@ const ShowCountry = ({ country }) => {
   return (
     <div>
       <h1>{country.name.common}</h1>
-      <p>Capital {country.capital}</p>
+      <p>Capital {country.capital.join(', ')}</p>
       <p>Area {country.area}</p>
       <h2>Languages</h2>
       <ul>
@@ -17,8 +17,10 @@ const ShowCountry = ({ country }) => {
         ))}
       </ul>
       <img src={country.flags.png} alt={`Flag of ${country.name.common}`} width="200" />
+      <h2>Weather in {country.capital[0]}</h2>
+      <Weather city={country.capital[0]} />
     </div>
   );
-};
-
+}
+  
 export default ShowCountry;

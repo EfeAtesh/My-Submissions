@@ -1,34 +1,52 @@
+import { useState } from 'react';
+import countryService from '../services/country';
+import ShowCountry from './ShowCountry';
+
 const Countries = ({ countries }) => {
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handleShowCountry = (countryName) => {
+    setError(null);
+    countryService
+      .getCountry(countryName)
+      .then(response => {
+        setSelectedCountry(response.data);
+      })
+      .catch(fetchError => {
+        console.error('Error fetching country:', fetchError);
+        setError('Country details could not be loaded.');
+      });
+  };
+
   if (countries.length > 10) {
     return <div>Too many matches, specify another filter</div>;
   }
+
+  if (countries.length === 0) {
+    return <div>No country found</div>;
+  }
+
+  if (selectedCountry) {
+    return <ShowCountry country={selectedCountry} />;
+  }
+
   if (countries.length > 1) {
     return (
       <div>
-        {countries.map((country) => (
-          <div key={country.cca3}>{country.name.common}</div>
+        {countries.map(country => (
+          <div key={country.cca3}>
+            <span>{country.name.common} </span>
+            <button type="button" onClick={() => handleShowCountry(country.name.common)}>
+              Show
+            </button>
+          </div>
         ))}
       </div>
     );
   }
-  if (countries.length === 0) {
-    return <div>No country found</div>;
-  }
-  if (countries.length === 1) {
-    return (<><h1>{countries[0].name.common}</h1><p>Capital {countries[0].capital}</p><p>Area {countries[0].area}</p>
-    <h1>Languages
-    </h1>
-    <ul>
-      {Object.values(countries[0].languages).map((language) => (
-        <li key={language}>{language}</li>
-      ))}
-    </ul>
-    <img src={countries[0].flags.png} alt={`Flag of ${countries[0].name.common}`} width="200" />
-    </>
-    );
-  }
 
-  return <div>{countries[0].name.common}</div>;
-}
+  return <ShowCountry country={countries[0]} />;
+};
 
-export default Countries
+export default Countries;

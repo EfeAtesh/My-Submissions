@@ -7,7 +7,7 @@ const getAll = () => {
 }
 
 const getCountry = (name) => {
-  return axios.get(`${getone}${name}`)
+  return axios.get(`${getone}${encodeURIComponent(name)}`)
 }
 
 

@@ -7,6 +7,8 @@ import countryService from './services/country';
 const App = () => {
     const [countries, setCountries] = useState([]);
     const [filter, setFilter] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         countryService
@@ -16,6 +18,10 @@ const App = () => {
             })
             .catch(error => {
                 console.error('Error fetching countries:', error);
+                setError('Countries could not be loaded.');
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
 
@@ -26,7 +32,9 @@ const App = () => {
   return (
     <div>
         <Filter filter={filter} setFilter={setFilter} />
-        <Countries countries={filteredCountries} />
+        {loading && <p>Loading countries...</p>}
+        {error && <p>{error}</p>}
+        {!loading && !error && <Countries countries={filteredCountries} />}
     </div>
   );
 };

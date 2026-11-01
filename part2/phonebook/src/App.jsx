@@ -27,6 +27,23 @@ const App = () => {
     if (persons.some((person) => person.name === newName && person.number === newNumber)) {
       alert(`${newName} and their phone number is already added to the phonebook`)
       return
+    } else if (persons.some((person) => person.name === newName && person.number !== newNumber)) {
+      if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+        const personToUpdate = persons.find((person) => person.name === newName)
+        const updatedPerson = { ...personToUpdate, number: newNumber }
+
+        personService
+          .update(personToUpdate.id, updatedPerson)
+          .then(response => {
+            setPersons(persons.map((person) => person.id !== personToUpdate.id ? person : response.data))
+            setNewName('')
+            setNewNumber('')
+            setFilterTerm('')
+          })
+          .catch(() => alert(`Could not update the number for ${newName}`))
+      }
+      
+      return
     }
 
     personService

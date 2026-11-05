@@ -26,6 +26,7 @@ let persons = [
     "name": "Mary Poppendieck",
     "number": "39-23-6423122"
   }
+  
 ]
 
 app.get('/api/persons', (req, res) => {
@@ -39,7 +40,7 @@ app.get('/api/persons/:id', (req, res) => {
   if (person) {
     res.json(person)
   } else {
-    res.status(404).end()
+    res.json({ error: 'Person not found' }).status(404)
   }
 })
 
@@ -47,6 +48,7 @@ app.get('/info', (req, res) => {
   const date = new Date()
   res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
 })
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

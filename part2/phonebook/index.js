@@ -1,4 +1,4 @@
-const express = require('express')
+import express from 'express'
 const app = express()
 
 const PORT = 3001
@@ -41,4 +41,13 @@ app.get('/api/persons/:id', (req, res) => {
   } else {
     res.status(404).end()
   }
+})
+
+app.get('/info', (req, res) => {
+  const date = new Date()
+  res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
+})
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })

@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "axios": "^1.21.0",
-    "express": "^11.16.0",
+    "express": "^4.21.2",
+    "morgan": "^1.12.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

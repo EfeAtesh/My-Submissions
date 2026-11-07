@@ -1,4 +1,5 @@
 import express from 'express'
+import morgan from 'morgan'  
 const app = express()
 
 const PORT = 3001
@@ -28,6 +29,9 @@ let persons = [
   }
   
 ]
+
+app.use(morgan('tiny')) 
+
 
 app.get('/api/persons', (req, res) => {
   res.json(persons)

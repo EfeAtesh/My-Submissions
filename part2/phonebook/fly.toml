@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for phonebook-efeates-forfullstack on 2026-11-11T13:10:06+03:00
+#
+# See https://docs.fly.io/reference/configuration for information about how to use this file.
+#
+
+app = 'phonebook-efeates-forfullstack'
+primary_region = 'cdg'
+
+[build]
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '256mb'
+  cpus = 1
+  memory_mb = 256

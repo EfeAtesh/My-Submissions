@@ -1,8 +1,10 @@
 import express from 'express'
 import morgan from 'morgan'  
+import cors from 'cors'
 const app = express()
 
 const PORT = 3001
+app.use(cors())
 
 app.use(express.json())
 
@@ -44,7 +46,7 @@ app.get('/api/persons/:id', (req, res) => {
   if (person) {
     res.json(person)
   } else {
-    res.json({ error: 'Person not found' }).status(404)
+    res.status(404).json({ error: 'Person not found' })
   }
 })
 

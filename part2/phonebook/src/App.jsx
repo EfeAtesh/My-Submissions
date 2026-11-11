@@ -6,6 +6,7 @@ import personService from './services/person'
 import '../index.css'
 import Notification from './components/Notification'
 
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -27,39 +28,6 @@ const App = () => {
 
   const handleListAdd = event => {
     event.preventDefault()
-
-    if (persons.some((person) => person.name === newName && person.number === newNumber)) {
-      alert(`${newName} and their phone number is already added to the phonebook`)
-      return
-    } else if (persons.some((person) => person.name === newName && person.number !== newNumber)) {
-      if (window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
-        const personToUpdate = persons.find((person) => person.name === newName)
-        const updatedPerson = { ...personToUpdate, number: newNumber }
-
-        personService
-          .update(personToUpdate.id, updatedPerson)
-          .then(response => {
-            setPersons(persons.map((person) => person.id !== personToUpdate.id ? person : response.data))
-            setErrorMessage(null)
-            setNewName('')
-            setNewNumber('')
-            setFilterTerm('')
-          })
-          .catch(error => {
-            if (error.response?.status === 404) {
-              setErrorMessage(`${newName} was already removed from the phonebook`)
-              personService
-                .getAll()
-                .then(response => setPersons(response.data))
-                .catch(() => setErrorMessage('Could not reload the phonebook'))
-            } else {
-              setErrorMessage(`Could not update the number for ${newName}`)
-            }
-          })
-      }
-      
-      return
-    }
 
     personService
       .create({ name: newName, number: newNumber })

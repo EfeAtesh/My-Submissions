@@ -1,11 +1,8 @@
 import express from 'express'
 import morgan from 'morgan'  
-import cors from 'cors'
 const app = express()
 
 const PORT = process.env.PORT || 3001
-
-app.use(cors())
 
 app.use(express.json())
 
@@ -36,6 +33,7 @@ let persons = [
 app.use(morgan('tiny')) 
 
 
+app.use(express.static('dist'))
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })

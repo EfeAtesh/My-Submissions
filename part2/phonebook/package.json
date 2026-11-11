@@ -11,11 +11,15 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "server": "json-server --watch src/db.json --port 3001"
+    "server": "json-server --watch src/db.json --port 3001",
+    "build": "vite build",
+    "build:ui": "rm -rf dist && npm run build",
+    "deploy": "flyctl deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs"
   },
   "dependencies": {
     "axios": "^1.21.0",
-    "cors": "^2.8.6",
     "express": "^4.21.2",
     "morgan": "^1.12.1",
     "react": "^19.3.1",

@@ -37,11 +37,23 @@ app.get('/info', (req, res) => {
   res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
+app.delete('/api/persons/:id', async (req, res) => {
+  const id = (req.params.id)  
+  try {
+    const deletedPerson = await mongodbInteraction.deletePerson(id)
 
-  res.status(204).end()
+    if (!deletedPerson) {
+      return res.status(404).end()
+    }
+
+    persons = persons.filter(
+      person => person._id.toString() !== id
+    )
+
+    res.status(204).end()
+  } catch (error) {
+    res.status(400).json({ error: 'Invalid person id' })
+  }
 })
 
 app.post('/api/persons', async (req, res) => {

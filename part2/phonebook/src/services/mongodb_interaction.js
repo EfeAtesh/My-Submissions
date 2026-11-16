@@ -21,5 +21,8 @@ const createPerson = (personData) => {
   return person.save()
 }
 
-export default { getPersons, createPerson }
+const deletePerson = (id) => Person.findByIdAndDelete(id)
+
+export default { getPersons, createPerson, deletePerson }
+
 

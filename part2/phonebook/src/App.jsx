@@ -7,6 +7,7 @@ import '../index.css'
 import Notification from './components/Notification'
 
 
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -25,6 +26,27 @@ const App = () => {
   const personsToShow = persons.filter(person =>
     person.name.toLowerCase().includes(filterTerm.toLowerCase())
   )
+  const deletePerson = id => {
+    const person = persons.find(p => p._id === id)
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter(p => p._id !== id))
+          setNotification(`Deleted ${person.name}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        })
+        .catch(() => {
+          setErrorMessage(`Information of ${person.name} has already been removed from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setPersons(persons.filter(p => p._id !== id))
+        })
+    }
+  }
 
   const handleListAdd = event => {
     event.preventDefault()
@@ -64,7 +86,7 @@ const App = () => {
       <PersonForm addPerson={handleListAdd} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
 
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} deletePerson={deletePerson} />
     </div>
   )
 }

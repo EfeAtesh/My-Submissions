@@ -16,5 +16,10 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', personSchema)
 
 const getPersons = () => Person.find({})
+const createPerson = (personData) => {
+  const person = new Person(personData)
+  return person.save()
+}
 
-export default { getPersons }
+export default { getPersons, createPerson }
+

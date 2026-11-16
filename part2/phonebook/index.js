@@ -25,7 +25,7 @@ app.get('/api/persons', async (req, res) => {
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
 
-  if (person) {
+  if (persons) {
     res.json(persons)
   } else {
     res.status(404).json({ error: 'Person not found' })
@@ -44,7 +44,7 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', async (req, res) => {
   const body = req.body
 
   if (!body.name || !body.number) {
@@ -61,6 +61,7 @@ app.post('/api/persons', (req, res) => {
     name: body.name,
     number: body.number
   }
+  await mongodbInteraction.createPerson(newPerson)
 
   persons = persons.concat(newPerson)
 

@@ -18,7 +18,7 @@ app.get('/api/persons', async (req, res) => {
     const personsFromDatabase = await mongodbInteraction.getPersons()
     res.json(personsFromDatabase)
   } catch (error) {
-    res.status(500).json({ error: 'Could not fetch persons from the database' })
+    next(error)
   }
 })
 
@@ -52,7 +52,7 @@ app.delete('/api/persons/:id', async (req, res) => {
 
     res.status(204).end()
   } catch (error) {
-    res.status(400).json({ error: 'Invalid person id' })
+    next(error)
   }
 })
 
@@ -84,3 +84,17 @@ app.post('/api/persons', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return res.status(400).send({ error: 'Malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler) 

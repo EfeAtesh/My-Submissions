@@ -13,7 +13,7 @@ app.use(morgan('tiny'))
 
 
 app.use(express.static('dist'))
-app.get('/api/persons', async (req, res) => {
+app.get('/api/persons', async (req, res, next) => {
   try {
     const personsFromDatabase = await mongodbInteraction.getPersons()
     res.json(personsFromDatabase)
@@ -23,10 +23,11 @@ app.get('/api/persons', async (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
 
-  if (persons) {
-    res.json(persons)
+  const person = persons.find(person => person._id.toString() === req.params.id)
+
+  if (person) {
+    res.json(person)
   } else {
     res.status(404).json({ error: 'Person not found' })
   }
@@ -37,7 +38,7 @@ app.get('/info', (req, res) => {
   res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
 })
 
-app.delete('/api/persons/:id', async (req, res) => {
+app.delete('/api/persons/:id', async (req, res, next) => {
   const id = (req.params.id)  
   try {
     const deletedPerson = await mongodbInteraction.deletePerson(id)
